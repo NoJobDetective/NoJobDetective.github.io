@@ -1,7 +1,144 @@
 <!DOCTYPE html>
 <html>
-<body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+<head>
+    <title>Todo List</title>
+    <style>
+        .todo-item {
+            cursor: move;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+
+        .todo-input {
+            width: 250px;
+            height: 30px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .todo-input::placeholder {
+            color: #999;
+        }
+
+        .todo-input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+        }
+    </style>
+</head>
+<body translate="no">
+    <h1>Todo List</h1>
+    <form id="taskForm">
+        <input id="task-input" class="todo-input" type="text" name="task" placeholder="新しいタスクを入力">
+        <button type="submit">追加</button>
+        <input id="input-deadline" class="todo-input" name="deadline" type="date"/>
+        <label for="deadline">まで</label>
+        <input type="radio" name="inputPriority" value="高"/><label for="inputPriority">高</label>
+        <input type="radio" name="inputPriority" value="中"/><label for="inputPriority">中</label>
+        <input type="radio" name="inputPriority" value="低"/><label for="inputPriority">低</label>
+        <input type="checkbox" name="inputAgenda"/><label for="inputAgenda">議題</label>
+        <input type="checkbox" name="inputWait"/><label for="inputWait">待機中</label>
+        <input type="checkbox" name="inputWorking"/><label for="inputWorking">作業中</label>
+        <input type="checkbox" name="inputConfirmation"/><label for="inputConfirmation">要確認</label>
+    </form>
+    <ul id="todo-list"></ul>
+    <script>
+        const inputElement = document.getElementById('task-input');
+        inputElement.focus();
+
+        const taskForm = document.getElementById('taskForm');
+        taskForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const task = event.target.elements.task.value.trim();
+            if (!task) return;
+
+            const deadline = event.target.elements.deadline.value.trim();
+            const deadlineText = deadline ? ` 【${deadline}まで】` : "";
+
+            const priority = document.querySelector('input[name="inputPriority"]:checked');
+            const priorityText = priority ? ` 優先度:${priority.value}` : "";
+
+            const agenda = document.querySelector('input[name="inputAgenda"]:checked');
+            const agendaText = agenda ? " 【議題】" : "";
+
+            const wait = document.querySelector('input[name="inputWait"]:checked');
+            const waitText = wait ? " 【待機中】" : "";
+
+            const working = document.querySelector('input[name="inputWorking"]:checked');
+            const workingText = working ? " 【作業中】" : "";
+
+            const confirmation = document.querySelector('input[name="inputConfirmation"]:checked');
+            const confirmationText = confirmation ? " 【要確認】" : "";
+
+            const newTask = agendaText + waitText + workingText + confirmationText + task + priorityText + deadlineText;
+
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks.push({ text: newTask, completed: false });
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+
+            event.target.reset();
+            renderTasks();
+        });
+
+        const todoList = document.getElementById('todo-list');
+
+        function renderTasks() {
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            todoList.innerHTML = '';
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.className = 'todo-item';
+                li.draggable = true;
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'todo-checkbox';
+                checkbox.checked = task.completed;
+                checkbox.addEventListener('change', () => {
+                    task.completed = checkbox.checked;
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                });
+
+                const span = document.createElement('span');
+                span.className = 'todo-text';
+                span.contentEditable = true;
+                span.textContent = task.text;
+                span.addEventListener('input', () => {
+                    task.text = span.textContent;
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                });
+
+                const saveBtn = document.createElement('button');
+                saveBtn.className = 'save-btn';
+                saveBtn.textContent = '保存';
+                saveBtn.addEventListener('click', () => {
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                });
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.textContent = '削除';
+                deleteBtn.addEventListener('click', () => {
+                    tasks.splice(index, 1);
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    renderTasks();
+                });
+
+                li.appendChild(checkbox);
+                li.appendChild(span);
+                li.appendChild(saveBtn);
+                li.appendChild(deleteBtn);
+                todoList.appendChild(li);
+            });
+        }
+
+        renderTasks();
+    </script>
 </body>
 </html>

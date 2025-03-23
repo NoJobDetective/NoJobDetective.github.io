@@ -87,7 +87,7 @@
                 button.innerText = `コピー (${index + 1})`;
                 button.onclick = () => {
                     navigator.clipboard.writeText(chunk).then(() => {
-                        
+                        window.open('https://chatgpt.com/?model=auto', '_blank');
                     });
                 };
                 container.appendChild(button);

@@ -68,18 +68,12 @@
                 let container = document.createElement("div");
                 container.classList.add("copy-container");
                 
-                let textArea = document.createElement("textarea");
-                textArea.value = chunk;
-                textArea.rows = 6;
-                textArea.style.width = "100%";
-                textArea.display = "none";
-                container.appendChild(textArea);
-                
                 let button = document.createElement("button");
                 button.innerText = `コピー (${index + 1})`;
                 button.onclick = () => {
-                    textArea.select();
-                    document.execCommand("copy");
+                    navigator.clipboard.writeText(chunk).then(() => {
+                        alert(`パート${index + 1}をコピーしました！`);
+                    });
                 };
                 container.appendChild(button);
                 

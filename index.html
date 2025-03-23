@@ -65,7 +65,7 @@
     <script>
         function splitText() {
             let inputText = document.getElementById("inputText").value;
-            inputText = inputText.replace(/\s+/g, ""); // スペースや改行を削除
+            inputText = inputText.replace(/[\u3000\n]/g, ""); // 全角スペースと改行を削除
 
             let chunkSize = parseInt(document.getElementById("chunkSize").value, 10) || 4000;
             const outputDiv = document.getElementById("output");

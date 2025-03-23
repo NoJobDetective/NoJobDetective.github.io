@@ -48,7 +48,6 @@
     </style>
 </head>
 <body>
-    <h2>テキストを4000文字で分割</h2>
     <textarea id="inputText" placeholder="ここにテキストを貼り付けてください"></textarea>
     <button onclick="splitText()">分割する</button>
     <div id="output" class="output"></div>
@@ -73,6 +72,7 @@
                 textArea.value = chunk;
                 textArea.rows = 6;
                 textArea.style.width = "100%";
+                textArea.display = "none";
                 container.appendChild(textArea);
                 
                 let button = document.createElement("button");

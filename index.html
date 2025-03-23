@@ -101,8 +101,7 @@
 
         function copyFullText() {
             let inputText = document.getElementById("inputText").value;
-            inputText = inputText.replace(/[　
-]/g, ""); // 全角スペースと改行を削除
+            inputText = inputText.replace(/[\u3000\n]/g, ""); // 全角スペースと改行を削除
             
             let selectedMode = document.querySelector('input[name="mode"]:checked').value;
             let prefix = `以下の内容を${selectedMode}してください:\n`;

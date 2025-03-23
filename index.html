@@ -61,6 +61,7 @@
     <br>
     <textarea id="inputText" placeholder="ここにテキストを貼り付けてください"></textarea>
     <button onclick="splitText()">分割する</button>
+    <button onclick="copyFullText()">全文コピー</button>
     <div id="output" class="output"></div>
 
     <script>
@@ -94,6 +95,21 @@
                 container.appendChild(button);
                 
                 outputDiv.appendChild(container);
+            });
+        }
+
+
+        function copyFullText() {
+            let inputText = document.getElementById("inputText").value;
+            inputText = inputText.replace(/[　
+]/g, ""); // 全角スペースと改行を削除
+            
+            let selectedMode = document.querySelector('input[name="mode"]:checked').value;
+            let prefix = `以下の内容を${selectedMode}してください:\n`;
+            let fullText = prefix + inputText;
+            
+            navigator.clipboard.writeText(fullText).then(() => {
+                alert("全文をコピーしました！");
             });
         }
     </script>

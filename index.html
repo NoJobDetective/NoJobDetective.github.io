@@ -41,13 +41,17 @@
         }
         .output {
             margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         .copy-container {
-            margin-bottom: 10px;
+            display: inline-block;
         }
     </style>
 </head>
 <body>
+    <h2>テキストを4000文字で分割</h2>
     <textarea id="inputText" placeholder="ここにテキストを貼り付けてください"></textarea>
     <button onclick="splitText()">分割する</button>
     <div id="output" class="output"></div>

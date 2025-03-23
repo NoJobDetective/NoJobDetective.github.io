@@ -51,6 +51,9 @@
     </style>
 </head>
 <body>
+    
+    <label for="chunkSize">分割する文字数:</label>
+    <input type="number" id="chunkSize" value="4000" min="1">
     <textarea id="inputText" placeholder="ここにテキストを貼り付けてください"></textarea>
     <button onclick="splitText()">分割する</button>
     <div id="output" class="output"></div>
@@ -59,7 +62,8 @@
         function splitText() {
             let inputText = document.getElementById("inputText").value;
             inputText = inputText.replace(/\s+/g, ""); // スペースや改行を削除
-            const chunkSize = 4000;
+
+            let chunkSize = parseInt(document.getElementById("chunkSize").value, 10) || 4000;
             const outputDiv = document.getElementById("output");
             outputDiv.innerHTML = "";
             

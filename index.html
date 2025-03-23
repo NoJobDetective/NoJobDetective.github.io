@@ -30,9 +30,64 @@
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
         }
     </style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+        }
+        .output {
+            margin-top: 10px;
+        }
+        .copy-container {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
-<body translate="no">
-    <h1>Todo List</h1>
+<body>
+    <h2>テキストを4000文字で分割</h2>
+    <textarea id="inputText" placeholder="ここにテキストを貼り付けてください"></textarea>
+    <button onclick="splitText()">分割する</button>
+    <div id="output" class="output"></div>
+
+    <script>
+        function splitText() {
+            const inputText = document.getElementById("inputText").value;
+            const chunkSize = 4000;
+            const outputDiv = document.getElementById("output");
+            outputDiv.innerHTML = "";
+            
+            let chunks = [];
+            for (let i = 0; i < inputText.length; i += chunkSize) {
+                chunks.push(inputText.substring(i, i + chunkSize));
+            }
+            
+            chunks.forEach((chunk, index) => {
+                let container = document.createElement("div");
+                container.classList.add("copy-container");
+                
+                let textArea = document.createElement("textarea");
+                textArea.value = chunk;
+                textArea.rows = 6;
+                textArea.style.width = "100%";
+                container.appendChild(textArea);
+                
+                let button = document.createElement("button");
+                button.innerText = `コピー (${index + 1})`;
+                button.onclick = () => {
+                    textArea.select();
+                    document.execCommand("copy");
+                    alert(`パート${index + 1}をコピーしました！`);
+                };
+                container.appendChild(button);
+                
+                outputDiv.appendChild(container);
+            });
+        }
+    </script>
     <form id="taskForm">
         <input id="task-input" class="todo-input" type="text" name="task" placeholder="新しいタスクを入力">
         <button type="submit">追加</button>

@@ -108,7 +108,7 @@
             let fullText = prefix + inputText;
             
             navigator.clipboard.writeText(fullText).then(() => {
-                alert("全文をコピーしました！");
+                window.open('https://chatgpt.com/?model=auto', '_blank');
             });
         }
     </script>

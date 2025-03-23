@@ -51,14 +51,14 @@
     </style>
 </head>
 <body>
-    <h2>テキストを4000文字で分割</h2>
     <textarea id="inputText" placeholder="ここにテキストを貼り付けてください"></textarea>
     <button onclick="splitText()">分割する</button>
     <div id="output" class="output"></div>
 
     <script>
         function splitText() {
-            const inputText = document.getElementById("inputText").value;
+            let inputText = document.getElementById("inputText").value;
+            inputText = inputText.replace(/\s+/g, ""); // スペースや改行を削除
             const chunkSize = 4000;
             const outputDiv = document.getElementById("output");
             outputDiv.innerHTML = "";
@@ -76,7 +76,7 @@
                 button.innerText = `コピー (${index + 1})`;
                 button.onclick = () => {
                     navigator.clipboard.writeText(chunk).then(() => {
-                        alert(`パート${index + 1}をコピーしました！`);
+                        
                     });
                 };
                 container.appendChild(button);
